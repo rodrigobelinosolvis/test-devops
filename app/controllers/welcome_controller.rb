@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
   def index
-    @msg = "olá criança : #{ENV['NOME']}"
+    @msg = "Opa ! Parece que deu boa hein, #{ENV['NOME']}! <br/> Parabéns !"
   end
 end
