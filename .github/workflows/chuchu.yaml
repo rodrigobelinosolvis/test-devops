@@ -19,6 +19,6 @@ jobs:
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
       - name: Install rubocop
-        run: gem bundler install rubocop-rails rubocop
+        run: gem install bundler rubocop-rails rubocop
       - name: Run Rubocop
         run: bundle exec rubocop .
