@@ -14,5 +14,11 @@ jobs:
     steps:
       - name: Running test01
         run: echo "Opa, blz ? Parece que boa hein ?!"
-
-    
+      - name: Getting the code
+        uses: actions/checkout@v2
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+      - name: Install rubocop
+        run: gem bundler install rubocop-rails rubocop
+      - name: Run Rubocop
+        run: bundle exec rubocop .
