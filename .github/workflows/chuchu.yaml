@@ -1,0 +1,18 @@
+name: Pipeline do chuchu
+
+on:
+  pull_request:
+    branches:
+      - development
+    paths-ignore:
+      - README.md
+
+jobs:
+  chuchu:
+    name: "My very first job"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Running test01
+        run: echo "Opa, blz ? Parece que boa hein ?!"
+
+    
