@@ -54,7 +54,7 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          name: solvis-engineering/teste-devops
+          name: solvis-engineering/teste-devops/ver1
           tags: ${{ steps.short-sha.outputs.sha }}
           dockerfile: Dockerfile
 
