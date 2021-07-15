@@ -29,8 +29,6 @@ jobs:
     name:  Build and Package
     runs-on: ubuntu-20.04    
     steps:
-      # checked on 2021-04-08
-      # https://github.com/actions/checkout
       - uses: actions/checkout@v2
       - name: Build and send image to registry
         uses: elgohr/Publish-Docker-Github-Action@master
