@@ -54,7 +54,8 @@ jobs:
           password: ${{ env.ghub_pkg_token }}
           name: solvis-engineering/${{ env.app_name }}/${{ env.app_name }}
           tags: ${{ steps.short-sha.outputs.sha }}
-          dockerfile: Dockerfilebuildargs: |
+          dockerfile: Dockerfile
+          buildargs: |
             BUILD_RAILS_ENV=production
             BUNDLE_WITHOUT=development/test
             GHUB_USER=solvis-eng
