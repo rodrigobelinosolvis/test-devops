@@ -54,14 +54,9 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          name: solvis-engineering/${{ env.app_name }}/${{ env.app_name }}
+          name: solvis-engineering/teste-devops
           tags: ${{ steps.short-sha.outputs.sha }}
           dockerfile: Dockerfile
-          buildargs: |
-            BUILD_RAILS_ENV=production
-            BUNDLE_WITHOUT=development/test
-            GHUB_USER=solvis-eng
-            GHUB_PASS=${{ env.ghub_pkg_token }}
 
   
   
