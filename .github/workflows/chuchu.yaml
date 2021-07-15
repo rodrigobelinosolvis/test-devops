@@ -26,7 +26,6 @@ jobs:
   # Building application  
   # ---------------------------------------- #
                       
-buid_n_package:
     name:  Build and Package
     runs-on: ubuntu-20.04
     env:
