@@ -25,28 +25,44 @@ jobs:
   # ---------------------------------------- #
   # Building application  
   # ---------------------------------------- #
-  push_to_registry:
-    name: Push Docker image to GitHub Packages
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
+                      
+buid_n_package:
+    name:  Build and Package
+    runs-on: ubuntu-20.04
+    env:
+      ghub_sha: ${{ github.sha }}
+      pr_owner: ${{ github.event.pull_request.head.repo.owner.login }}
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-      - name: Log in to GitHub Docker Registry
-        uses: docker/login-action@v1
+      # checked on 2021-04-08
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v2
+      - run: | 
+          curl -L https://storage.solvis.net.br/public/pipeline/${{ env.app_name }}/rabbitmq.yml > config/rabbitmq.yml
+          curl -L https://storage.solvis.net.br/public/pipeline/${{ env.app_name }}/master.key > config/master.key
+      # The action short-sha was deprecated.
+      # https://github.com/benjlevesque/short-sha
+      # deprecated
+      - name: short-sha
+        id: short-sha
+        run: |
+          echo "::set-output name=sha::$(echo "${{ env.ghub_sha }}" | cut -c1-8)"
+      # checked on 2021-04-08
+      # https://github.com/elgohr/Publish-Docker-Github-Action
+      - name: Build and send image to registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        id: build
         with:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build container image
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: |
-            docker.pkg.github.com/${{ github.repository }}/octo-image:${{ github.sha }}
-            docker.pkg.github.com/${{ github.repository }}/octo-image:${{ github.ref }}
+          name: solvis-engineering/${{ env.app_name }}/${{ env.app_name }}
+          tags: ${{ steps.short-sha.outputs.sha }}
+          dockerfile: Dockerfile
+          buildargs: |
+            BUILD_RAILS_ENV=production
+            BUNDLE_WITHOUT=development/test
+            GHUB_USER=solvis-eng
+            GHUB_PASS=${{ env.ghub_pkg_token }}
 
   
   
