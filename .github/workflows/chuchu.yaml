@@ -27,26 +27,11 @@ jobs:
   # ---------------------------------------- #
   buid_n_package:                 
     name:  Build and Package
-    runs-on: ubuntu-20.04
-    env:
-      ghub_sha: ${{ github.sha }}
-      pr_owner: ${{ github.event.pull_request.head.repo.owner.login }}
+    runs-on: ubuntu-20.04    
     steps:
       # checked on 2021-04-08
       # https://github.com/actions/checkout
       - uses: actions/checkout@v2
-      - run: | 
-          curl -L https://storage.solvis.net.br/public/pipeline/${{ env.app_name }}/rabbitmq.yml > config/rabbitmq.yml
-          curl -L https://storage.solvis.net.br/public/pipeline/${{ env.app_name }}/master.key > config/master.key
-      # The action short-sha was deprecated.
-      # https://github.com/benjlevesque/short-sha
-      # deprecated
-      - name: short-sha
-        id: short-sha
-        run: |
-          echo "::set-output name=sha::$(echo "${{ env.ghub_sha }}" | cut -c1-8)"
-      # checked on 2021-04-08
-      # https://github.com/elgohr/Publish-Docker-Github-Action
       - name: Build and send image to registry
         uses: elgohr/Publish-Docker-Github-Action@master
         id: build
@@ -55,7 +40,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           name: solvis-engineering/teste-devops/ver1
-          tags: ${{ steps.short-sha.outputs.sha }}
           dockerfile: Dockerfile
 
   
