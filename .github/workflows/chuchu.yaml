@@ -1,12 +1,4 @@
 name: Pipeline do chuchu
-
-# Global env variables (used more than once)
-env:
-  app_name: ${{ github.event.repository.name }}
-  ghub_code_token: ${{ secrets.GHUB_TOKEN }}
-  ghub_pkg_token: ${{ secrets.GHUB_PKG_TOKEN }}
-  chat_webhook: ${{ secrets.PIPETEST_WEBHOOK }}
-
 on:
   pull_request:
     branches:
@@ -36,29 +28,19 @@ jobs:
   buid_n_package:
     name:  Build and Package
     runs-on: ubuntu-latest
-    env:
-      ghub_sha: ${{ github.sha }}
-      pr_owner: ${{ github.event.pull_request.head.repo.owner.login }}
     steps:
       - uses: actions/checkout@v2
       - name: short-sha
         id: short-sha
-        run: |
+        run:
           echo "::set-output name=sha::$(echo "${{ env.ghub_sha }}" | cut -c1-8)"
       - name: Build image
         uses: elgohr/Publish-Docker-Github-Action@master
         id: build
         with:
-          registry: docker.pkg.github.com
-          username: ${{ github.repository_owner }}
-          password: ${{ env.ghub_pkg_token }}
           name: solvis-engineering/${{ env.app_name }}/${{ env.app_name }}
           tags: ${{ steps.short-sha.outputs.sha }}
           dockerfile: Dockerfile
-          buildargs: |
-            BUILD_RAILS_ENV=production
-            BUNDLE_WITHOUT=development/test
-            GHUB_USER=rbelino
-            GHUB_PASS=${{ env.ghub_pkg_token }}
+
   
   
