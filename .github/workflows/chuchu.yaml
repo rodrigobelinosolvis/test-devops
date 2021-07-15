@@ -1,5 +1,4 @@
 name: Pipeline do chuchu
-
 on:
   pull_request:
     branches:
@@ -14,5 +13,32 @@ jobs:
     steps:
       - name: Running test01
         run: echo "Opa, blz ? Parece que boa hein ?!"
+      - name: Getting the code
+        uses: actions/checkout@v2
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+      - name: Install rubocop
+        run: gem install bundler rubocop-rails rubocop
+      - name: Run Rubocop
+        run: rubocop
 
-    
+  # ---------------------------------------- #
+  # Building application  
+  # ---------------------------------------- #
+  buid_n_package:                 
+    name:  Build and Package
+    runs-on: ubuntu-20.04    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and send image to registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        id: build
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          name: rodrigobelinosolvis/teste-devops/ver1
+          dockerfile: Dockerfile
+
+  
+  
