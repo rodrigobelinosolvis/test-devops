@@ -39,7 +39,7 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          name: rbelino/teste-devops/ver1
+          name: rodrigobelinosolvis/teste-devops/ver1
           dockerfile: Dockerfile
 
   
